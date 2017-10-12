@@ -24,7 +24,8 @@ function pluralize_dominion(card_name){
         "Rocks":"Rocks",
         "Catacombs":"Catacombs",
         "Fairgrounds":"Fairgrounds",
-        "Oasis":"Oasis"
+        "Oasis":"Oasis",
+        "Platina":"Platinum"
     }
     if (card_name in special_cases){
         return special_cases[card_name];
@@ -82,7 +83,7 @@ function print_log(){
                 else if (trash_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?) trashes ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*)\.");
                     //salt special case
-                    if (key >= 2 && log_lines[key-1].innerText.search(" buys a Salt the Earth")>0){
+                    if (key >= 2 && log_lines[key-2].innerText.search(" buys a Salt the Earth")>0){
                         continue;
                     }
                     //lurker special case
