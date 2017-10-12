@@ -1,0 +1,15 @@
+{
+
+  "manifest_version": 2,
+  "name": "Dominion Tracker",
+  "version": "1.0",
+
+  "description": "Tracks Dominion deck contents. By Bryan",
+  "content_scripts": [
+    {
+      "matches": ["*://*.dominion.games/*"],
+      "js": ["jquery-1.12.4.js","jquery-ui-1.12.1.js","dominionset.js","pluralize.js","dominiontracker.js"]
+    }
+  ]
+
+}
