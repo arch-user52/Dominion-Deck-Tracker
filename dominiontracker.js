@@ -1,3 +1,9 @@
+//Bugs with deck counter:
+//--fortress maybe still broken
+//--treasure map?
+//--images for 3+ word cards
+//--Possession trashing
+
 //helper function to wrap pluralize with special dominion cases
 function pluralize_dominion(card_name){
     //hard coded special cases
@@ -37,13 +43,13 @@ function pluralize_dominion(card_name){
 function make_deck_html(decks){
     var deck_html = "";
     for (var deck in decks){
-        deck_html += "<div style='height:50%;'><h3 style='background-color:white;'>&nbsp"+deck+"'s Deck</h3><ul>";
+        deck_html += "<div style='height:50%;'><h3 style='background-color:white;'>&nbsp"+deck+"'s Deck</h3><table style='background-color:black;width:100%;'>";
         for (var card in decks[deck]){
             if (decks[deck][card] != 0){
-                deck_html += "<li  style='color:white;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;overflow: hidden;text-overflow: ellipsis; vertical-align: middle;border-style: solid;border-width: 1px 0px 1px 0px;border-color: black;line-height: 30px;height:30px;background-position: center; background-image: url(\"https://dominion.games/images/cards/art/"+get_card_set(card).toLowerCase().replace(" ","-")+"/"+card.toLowerCase().replace(" ","-").replace("'","")+".jpg\");'>&nbsp"+decks[deck][card]+" "+card+"</li>";
+                deck_html += "<tr  style='color:white;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black,1px 1px 3px black;overflow: hidden;text-overflow: ellipsis; vertical-align: middle;border-style: solid;border-width: 1px 0px 1px 0px;border-color: black;line-height: 30px;height:30px;'><td>&nbsp"+decks[deck][card]+"</td><td style='background-repeat: no-repeat;background-size: 100% auto;background-position: right center; background-image: url(\"https://dominion.games/images/cards/art/"+get_card_set(card).toLowerCase().replace(" ","-")+"/"+card.toLowerCase().replace(" ","-").replace("'","")+".jpg\");'>&nbsp"+card+"</td></tr>";
             }
         }
-        deck_html += "</ul></div>";
+        deck_html += "</table></div>";
     }
     return deck_html;
 }
@@ -142,10 +148,6 @@ function print_log(){
                         //pass card to player
                         if (pass_test>0){
                             target_player = text_match[3];
-                            //check if card in target deck
-                            console.log("text_match[1]" + text_match[1]);
-                            console.log("text_match[2]" + text_match[2]);
-                            console.log("text_match[3]" + text_match[3]);
                             if (!(card_name in decks[text_match[3]])){
                                 decks[text_match[3]][card_name] = 0;
                             }
@@ -182,11 +184,23 @@ function waitForElementToDisplay(selector, time) {
     }, time);
 }
 
+
+$("body").on("mouseenter", ".tracker-div", function(event) {
+    $(".tracker-div").fadeTo(0,.5);
+});
+
+$("body").on("mouseleave", ".tracker-div", function(event) {
+    $(".tracker-div").fadeTo(0,1);
+});
+
+$("body").css("tracker-div:hover{opacity:1;}")
 //set up empty tracker div
 var trackerDiv = document.createElement('div');
-trackerDiv.style.cssText = 'opacity:0.75;pointer-events: none;left:65%;height:100%;width:10%;position:fixed!important;z-index:100;overflow:auto;font-size: 20px;color: rgba(0, 0, 0, 1)';
+trackerDiv.style.cssText = 'opacity:.8;pointer-events: none;left:65%;height:100%;width:10%;position:fixed!important;z-index:100;overflow:auto;font-size: 20px;color: rgba(0, 0, 0, 1)';
 trackerDiv.id = 'tracker-div';
-document.body.appendChild(trackerDiv);
-
+trackerDiv.class = "tracker-div";
+$('body').append(trackerDiv);
+//$("#body").hover($("#tracker-div").fadeTo(0,.5),$("#tracker-div").fadeTo(0,1));
 //start timeout
+
 waitForElementToDisplay(".game-log",200);

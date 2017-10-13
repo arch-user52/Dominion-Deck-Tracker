@@ -8,6 +8,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.dominion.games/*"],
+      "css": [ "tracker.css" ],
       "js": ["jquery-1.12.4.js","jquery-ui-1.12.1.js","dominionset.js","pluralize.js","dominiontracker.js"]
     }
   ]
