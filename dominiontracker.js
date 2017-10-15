@@ -3,6 +3,7 @@
 //--treasure map?
 //--images for 3+ word cards
 //--Possession trashing
+//--"gain from trash" noble brigand, etc
 
 //helper function to wrap pluralize with special dominion cases
 function pluralize_dominion(card_name){
@@ -31,7 +32,8 @@ function pluralize_dominion(card_name){
         "Catacombs":"Catacombs",
         "Fairgrounds":"Fairgrounds",
         "Oasis":"Oasis",
-        "Platina":"Platinum"
+        "Platina":"Platinum",
+        "Crossroads":"Crossroads"
     }
     if (card_name in special_cases){
         return special_cases[card_name];
@@ -45,7 +47,7 @@ function make_deck_html(decks){
     for (var deck in decks){
         deck_html += "<div style='height:50%;'><h3 style='background-color:white;'>&nbsp"+deck+"'s Deck</h3><table style='background-color:black;width:100%;'>";
         for (var card in decks[deck]){
-            if (decks[deck][card] != 0){
+            if (decks[deck][card] > 0){
                 deck_html += "<tr  style='color:white;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black,1px 1px 3px black;overflow: hidden;text-overflow: ellipsis; vertical-align: middle;border-style: solid;border-width: 1px 0px 1px 0px;border-color: black;line-height: 30px;height:30px;'><td>&nbsp"+decks[deck][card]+"</td><td style='background-repeat: no-repeat;background-size: 100% auto;background-position: right center; background-image: url(\"https://dominion.games/images/cards/art/"+get_card_set(card).toLowerCase().replace(" ","-")+"/"+card.toLowerCase().replace(" ","-").replace("'","")+".jpg\");'>&nbsp"+card+"</td></tr>";
             }
         }
@@ -193,7 +195,6 @@ $("body").on("mouseleave", ".tracker-div", function(event) {
     $(".tracker-div").fadeTo(0,1);
 });
 
-$("body").css("tracker-div:hover{opacity:1;}")
 //set up empty tracker div
 var trackerDiv = document.createElement('div');
 trackerDiv.style.cssText = 'opacity:.8;pointer-events: none;left:65%;height:100%;width:10%;position:fixed!important;z-index:100;overflow:auto;font-size: 20px;color: rgba(0, 0, 0, 1)';
