@@ -8,7 +8,7 @@
 //helper function to wrap pluralize with special dominion cases
 function pluralize_dominion(card_name){
     //hard coded special cases
-    var special_cases = {        
+    var special_cases = {
         "Coins of the Realm":"Coin of the Realm",
         "Horns of Plenty":"Horn of Plenty",
         "Rats":"Rats",
@@ -75,19 +75,20 @@ function print_log(){
             receive_test = line_text.search(" receives ");
             pass_test = line_text.search(" passes ");
             put_test = line_text.search(" puts ");
+            exile_test = line_text.search(" from Exile.");
             //ignore puts in not fortress case for now
             if (line_text.search(!" Fortress " > 0)){
                 put_test = 0;
             }
-            if(gains_test > 0 || starts_test > 0 || trash_test > 0 || return_test > 0 || receive_test > 0 || pass_test > 0 || put_test > 0){
+            if(gains_test > 0 || starts_test > 0 || trash_test > 0 || return_test > 0 || receive_test > 0 || pass_test > 0 || put_test > 0 || exile_test > 0){
                 //regex to match gaining text
                 var text_match = [];
                 if (gains_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?)(?: buys and)* gains ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*)\.");
-                }            
+                }
                 else if (starts_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?) starts with ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*)\.");
-                }      
+                }
                 else if (trash_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?) trashes ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*)\.");
                     //salt special case
@@ -111,7 +112,7 @@ function print_log(){
                     else {
                         text_match = line_text.match("([-A-Za-z\.]*?) returns ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*)\.");
                     }
-                    
+
                 }
                 else if (receive_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?) receives ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*)\.");
@@ -122,6 +123,9 @@ function print_log(){
                 else if (put_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?) puts ((?:[,and]*[an0-9]* [-A-Za-z\' ]*?)*) into their hand\.")
                 }
+                else if (exile_test > 0){
+                    text_match = line_text.match("([-A-Za-z\.]*?) discards ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*) from Exile\.")
+                }
 
                 if (text_match != null && text_match[1] != 'undefined')
                 {
@@ -129,7 +133,7 @@ function print_log(){
                     if (!(text_match[1] in decks)){
                         decks[text_match[1]] = {};
                     }
-                        
+
                     //split matches
                     text_matches = text_match[2].split(/, | and /);
                     for (var match in text_matches){
@@ -155,7 +159,7 @@ function print_log(){
                             }
                             //increment card in deck
                             decks[text_match[3]][card_name]+=quantifier;
-                        }      
+                        }
                         //change to negative for trashes or returns
                         if (trash_test>0 || return_test>0 || pass_test>0){
                             quantifier=quantifier*-1;
