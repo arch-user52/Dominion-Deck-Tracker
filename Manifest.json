@@ -1,10 +1,10 @@
 {
 
   "manifest_version": 2,
-  "name": "Dominion Tracker",
-  "version": "1.0",
+  "name": "Dominion Deck Tracker Variant",
+  "version": "2.0",
 
-  "description": "Tracks Dominion deck contents. By Bryan",
+  "description": "Tracks Dominion deck contents. Updated By Xzight. Orignally by Bryan",
   "content_scripts": [
     {
       "matches": ["*://*.dominion.games/*"],
