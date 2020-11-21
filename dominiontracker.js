@@ -75,12 +75,13 @@ function print_log(){
             receive_test = line_text.search(" receives ");
             pass_test = line_text.search(" passes ");
             put_test = line_text.search(" puts ");
-            exile_test = line_text.search(" from Exile.");
+            exileDiscard_test = line_text.search(" from Exile.");
+            exile_test = line_text.search(" exiles ");
             //ignore puts in not fortress case for now
             if (line_text.search(!" Fortress " > 0)){
                 put_test = 0;
             }
-            if(gains_test > 0 || starts_test > 0 || trash_test > 0 || return_test > 0 || receive_test > 0 || pass_test > 0 || put_test > 0 || exile_test > 0){
+            if(gains_test > 0 || starts_test > 0 || trash_test > 0 || return_test > 0 || receive_test > 0 || pass_test > 0 || put_test > 0 || exileDiscard_test > 0 || exile_test > 0){
                 //regex to match gaining text
                 var text_match = [];
                 if (gains_test > 0){
@@ -96,11 +97,11 @@ function print_log(){
                         continue;
                     }
                     //lurker special case
-                    if (key >= 2 && log_lines[key-1].innerText.search(" plays a Lurker")>0){
+                    if (key >= 2 && log_lines[key-2].innerText.search(" plays a Lurker")>0){
                         continue;
                     }
                     //gladiator special case
-                    if (key >= 3 && log_lines[key-2].innerText.search(" plays a Gladiator")>0){
+                    if (key >= 4 && log_lines[key-4].innerText.search(" plays a Gladiator")>0){
                         continue;
                     }
                 }
@@ -123,10 +124,18 @@ function print_log(){
                 else if (put_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?) puts ((?:[,and]*[an0-9]* [-A-Za-z\' ]*?)*) into their hand\.")
                 }
-                else if (exile_test > 0){
+                else if (exileDiscard_test > 0){
                     text_match = line_text.match("([-A-Za-z\.]*?) discards ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*) from Exile\.")
                 }
-
+                else if (exile_test > 0){
+                    text_match = line_text.match("([-A-Za-z\.]*?) exiles ((?:[,and]*[an0-9]* [-A-Za-z\' ]*)*)\.")
+                    if (key >= 2 && log_lines[key-1].innerText.search(" plays a Camel Train")>0){
+                        continue;
+                    }
+                    if (key >= 2 && log_lines[key-1].innerText.search(" buys and gains a Camel Train")>0){
+                        continue;
+                    }
+                }
                 if (text_match != null && text_match[1] != 'undefined')
                 {
                     //create player deck if it doesnt exist
@@ -161,7 +170,7 @@ function print_log(){
                             decks[text_match[3]][card_name]+=quantifier;
                         }
                         //change to negative for trashes or returns
-                        if (trash_test>0 || return_test>0 || pass_test>0){
+                        if (trash_test>0 || return_test>0 || pass_test>0 || exile_test>0){
                             quantifier=quantifier*-1;
                         }
                         //increment card in deck
